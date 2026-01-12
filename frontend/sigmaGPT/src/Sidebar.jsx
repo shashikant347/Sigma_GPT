@@ -82,7 +82,7 @@ function Sidebar() {
   };
 
   /* =====================
-     CLEAR ALL HISTORY 🔥
+     CLEAR ALL HISTORY 
   ===================== */
   const clearAllHistory = async () => {
     const confirmDelete = window.confirm(
@@ -113,7 +113,7 @@ function Sidebar() {
         </span>
       </button>
 
-      {/* CLEAR HISTORY BUTTON 🔥 */}
+      {/* CLEAR HISTORY BUTTON */}
       <button className="clear-history-btn" onClick={clearAllHistory}>
         <i className="fa-solid fa-trash"></i> Clear History
       </button>
