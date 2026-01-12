@@ -20,7 +20,7 @@ function Sidebar() {
   ===================== */
   const getAllThreads = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/thread");
+      const response = await fetch("https://sigmagpt-5g8w.onrender.com/api/thread");
       if (!response.ok) return;
 
       const data = await response.json();
@@ -51,7 +51,7 @@ function Sidebar() {
   const changeThread = async (id) => {
     try {
       setCurrThreadId(id);
-      const res = await fetch(`http://localhost:8080/api/thread/${id}`);
+      const res = await fetch(`https://sigmagpt-5g8w.onrender.com/api/thread/${id}`);
       const data = await res.json();
 
       setPrevChats(data);
@@ -67,7 +67,7 @@ function Sidebar() {
   ===================== */
   const deleteThread = async (id) => {
     try {
-      await fetch(`http://localhost:8080/api/thread/${id}`, {
+      await fetch(`https://sigmagpt-5g8w.onrender.com/api/thread/${id}`, {
         method: "DELETE",
       });
 
@@ -92,7 +92,7 @@ function Sidebar() {
     if (!confirmDelete) return;
 
     try {
-      await fetch("http://localhost:8080/api/thread", {
+      await fetch("https://sigmagpt-5g8w.onrender.com/api/thread", {
         method: "DELETE",
       });
 
