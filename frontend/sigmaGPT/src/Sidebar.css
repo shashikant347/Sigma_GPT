@@ -85,3 +85,18 @@ button:hover {
     background-color: rgba(180, 180, 180, 0.05);
     border-radius: 10px;
 }
+
+
+.clear-history-btn {
+  margin: 10px;
+  padding: 8px;
+  background: #111;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.clear-history-btn:hover {
+  background: red;
+}

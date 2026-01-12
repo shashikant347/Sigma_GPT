@@ -4,12 +4,14 @@ import getGroqAPIResponse from "../utils/openai.js";
 
 const router = express.Router();
 
-// Chat route
+/* =====================
+   CHAT
+===================== */
 router.post("/chat", async (req, res) => {
   const { threadId, message } = req.body;
 
   if (!threadId || !message) {
-    return res.status(400).json({ error: "missing required fields" });
+    return res.status(400).json({ error: "Missing fields" });
   }
 
   try {
@@ -18,26 +20,66 @@ router.post("/chat", async (req, res) => {
     if (!thread) {
       thread = new Thread({
         threadId,
-        title: "New Chat",
+        title: message.slice(0, 30),
         messages: [{ role: "user", content: message }],
       });
     } else {
       thread.messages.push({ role: "user", content: message });
     }
 
-    // call Groq API
     const assistantReply = await getGroqAPIResponse(message);
 
-    // save assistant reply
-    thread.messages.push({ role: "assistant", content: assistantReply });
-    thread.updatedAt = new Date();
+    thread.messages.push({
+      role: "assistant",
+      content: assistantReply,
+    });
 
     await thread.save();
-    return res.json({ reply: assistantReply });
+    res.json({ reply: assistantReply });
   } catch (err) {
-    console.log("Chat route error:", err);
-    return res.status(500).json({ error: "something went wrong" });
+    console.error(err);
+    res.status(500).json({ error: "Chat failed" });
   }
+});
+
+/* =====================
+   GET ALL THREADS (SIDEBAR)
+===================== */
+router.get("/thread", async (req, res) => {
+  const threads = await Thread.find(
+    {},
+    { threadId: 1, title: 1, _id: 0 }
+  ).sort({ updatedAt: -1 });
+
+  res.json(threads);
+});
+
+/* =====================
+   GET SINGLE THREAD
+===================== */
+router.get("/thread/:threadId", async (req, res) => {
+  const thread = await Thread.findOne(
+    { threadId: req.params.threadId },
+    { messages: 1, _id: 0 }
+  );
+
+  res.json(thread?.messages || []);
+});
+
+/* =====================
+   DELETE SINGLE THREAD
+===================== */
+router.delete("/thread/:threadId", async (req, res) => {
+  await Thread.deleteOne({ threadId: req.params.threadId });
+  res.json({ success: true });
+});
+
+/* =====================
+   DELETE ALL HISTORY 🔥
+===================== */
+router.delete("/thread", async (req, res) => {
+  await Thread.deleteMany({});
+  res.json({ success: true });
 });
 
 export default router;
