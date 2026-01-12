@@ -1,4 +1,4 @@
-import "./ChatWindow.css";
+import "./chatWindow.css";
 import Chat from "./chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect } from "react";
